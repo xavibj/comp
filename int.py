@@ -21,8 +21,10 @@ def p_statement_expression(p):
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
-
+    try:
+        p[0] = p[1] + p[3]
+    except:
+        print("Ahhhh")
 
 def p_expression_minus(p):
     'expression : expression MINUS term'
@@ -56,8 +58,11 @@ def p_factor_num(p):
 
 def p_factor_ident(p):
     'factor : IDENT'
-    p[0] = names[p[1]]
-
+    try:
+        p[0] = names[p[1]]
+    except LookupError:
+        print("undefined name '%s'" % p[1])
+        #p[0] = 0
 
 def p_factor_expr(p):
     'factor : LPAREN expression RPAREN'
@@ -111,7 +116,8 @@ class int(cmd.Cmd):
         except SyntaxError:
             print("Syntax error!")
         else:
-            if result: print(result)
+            names['last'] = result
+            print(result)
 
     def do_names(self, args):
         """List names"""
